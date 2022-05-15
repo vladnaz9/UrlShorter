@@ -13,7 +13,7 @@ def getShortUrl(request):
 
 
 # достать все ссылки
-def AllShorters(request):
+def showAll(request):
     urls = UrlShorter.objects.all()
 
     allUrls = []
@@ -25,6 +25,6 @@ def AllShorters(request):
 
         allUrls.append(view)
 
-    context: {'urls': allUrls}
+    context = {'allUrls': allUrls}
 
-    return render(request, 'webapp/allUrls.html', allUrls)
+    return render(request, 'webapp/allUrls.html', context)

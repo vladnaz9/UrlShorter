@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     # Главная страница
     path('', views.index),
+    path('showAll/', views.showAll),
 ]
