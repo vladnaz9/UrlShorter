@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import base64
 import hashlib
 import hmac
+import binascii
 
 # Модель ссылки
 class UrlShorter(models.Model):
@@ -12,7 +13,7 @@ class UrlShorter(models.Model):
     long_url = models.URLField()  # полная ссылка
     short_url = models.URLField(unique=True, blank=True)  # короткая ссылка
     clicks = models.PositiveIntegerField(default=0)  # сколько раз использовали ссылку
-    url_hash = models.CharField(max_length= 20) # храним url + соль
+    url_hash = models.CharField(max_length=20) # храним url + соль
 
     class Meta:
         ordering = ["-clicks"]
@@ -24,11 +25,18 @@ class UrlShorter(models.Model):
         self.clicks += 1
         self.save()
 
-    def gen_hash_for_short_url(self, long_url) -> None:
-        salt = os.urandom(32)
-        hash = hashlib.pbkdf2_hmac('sha256', long_url.encode('utf-8'), salt, 100000)
-        self.short_url = "".join(['http://127.0.0.1:8000/shorter/', hash])
-        self.url_hash = f"${salt}${hash}"
+    # def gen_hash_for_short_url(self, long_url) -> None:
+    #     salt = os.urandom(32)
+    #     hash = hashlib.pbkdf2_hmac('sha256', long_url.encode('utf-8'), salt, 100000)
+    #     self.short_url = "".join(['http://127.0.0.1:8000/shorter/', hash])
+    #     self.url_hash = f"${salt}${hash}"
 
     def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
+        long_url = self.long_url
+        salt = os.urandom(32)
+        my_hash = hashlib.pbkdf2_hmac('sha256', long_url.encode('utf-8'), salt, 100000, 4)
+        string = str(binascii.hexlify(my_hash))
+        self.short_url = "".join(['http://127.0.0.1:8000/shorter/', string[2:-1]])
+        self.url_hash = f"${salt}${my_hash}"
+        super(UrlShorter, self).save(*args, **kwargs)
+        return self.short_url
