@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.index),
     path('showAll/', views.showAll),
     path('shorter/<str:param>',  views.getShortUrl),
+    path('/delete/<int:param>',  views.delete),
 ]
