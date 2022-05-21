@@ -10,16 +10,37 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<div class='col-3 ofsset-3'>
-    Все ссылки
-    {% for url in allUrls %}
+
+<div class="container">
+    <h1> Все ссылки </h1>
     <div class="row">
-        <div class="col-9">
-            {{ url.str }} <br>
-            <b> Клики: </b>{{ url.clicks}}
+        <div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        Ссылка:
+                    </th>
+                    <th scope="col">
+                        Кликов:
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for url in allUrls %}
+                    <tr>
+                        <td>
+                            {{ url.str }}
+                        </td>
+                        <td>
+                            <b> {{ url.clicks }} </b>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    {% endfor %}
 </div>
 </body>
 </html>

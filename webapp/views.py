@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import UrlShorter
 from .forms import ShortUrlForm
 
+
 # Create your views here.
 # Главная страница
 def index(request):
-    if(request.method == 'POST'):
+    if request.method == 'POST':
         form = ShortUrlForm(request.POST)
         short_url = form.save()
         data = {
@@ -19,8 +20,13 @@ def index(request):
     return render(request, 'webapp/index.html', context)
 
 
-def getShortUrl(request):
-    return
+def getShortUrl(request, param):
+    url = UrlShorter.objects.filter(url_param=param).first()
+
+    if url is None:
+        return render(request, 'webapp/wrongUrl.html', context={'url': param})
+    url.clicked()
+    return redirect(url.long_url)
 
 
 # достать все ссылки
@@ -39,3 +45,4 @@ def showAll(request):
     context = {'allUrls': allUrls}
 
     return render(request, 'webapp/allUrls.html', context)
+
