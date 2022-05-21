@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
+    {% if param %}
 <h1>NOT FOUND SHORT URL WITH PARAMETER {{ param }}</h1>
+        {% else %}
+        <h1> ERROR, PLEASE TRY AGAIN</h1>
+    {% endif %}
 </body>
 </html>

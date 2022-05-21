@@ -7,14 +7,16 @@ import hashlib
 import hmac
 import binascii
 
+
 # Модель ссылки
 class UrlShorter(models.Model):
+    id = models.AutoField(primary_key=True)
     created = models.DateTimeField(auto_now_add=True)  # дата создания
     long_url = models.URLField()  # полная ссылка
     short_url = models.URLField(unique=True, blank=True)  # короткая ссылка
     clicks = models.PositiveIntegerField(default=0)  # сколько раз использовали ссылку
     # url_hash = models.CharField(max_length=20) # храним url + соль
-    url_param = models.CharField(max_length=20, default='0', blank=True) # храним ссылку, что получили из хэша
+    url_param = models.CharField(max_length=20, default='0', blank=True)  # храним ссылку, что получили из хэша
 
     class Meta:
         ordering = ["-clicks"]

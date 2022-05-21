@@ -18,22 +18,35 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
+                    <th>123</th>
                     <th scope="col">
                         Ссылка:
                     </th>
                     <th scope="col">
                         Кликов:
                     </th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for url in allUrls %}
                     <tr>
                         <td>
+                            {{ url.id }}
+                        </td>
+                        <td>
                             {{ url.str }}
                         </td>
                         <td>
                             <b> {{ url.clicks }} </b>
+                        </td>
+                        <td>
+                            <form method="post" action=""
+                                  onsubmit="return confirm('Are you sure you want to delete this url?');">
+                                {% csrf_token %}
+                                <input  id="id" type="hidden" name="id" value={{ url.id }} >
+                                <button class="btn btn-primary mt-1" type="submit">Удалить</button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
