@@ -21,6 +21,7 @@ def index(request):
     context = {'form': form}
     return render(request, 'webapp/index.html', context)
 
+
 # переход по короткой ссылке
 def getShortUrl(request, param):
     url = UrlShorter.objects.filter(url_param=param).first()
